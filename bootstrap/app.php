@@ -1,0 +1,170 @@
+<?php
+
+use App\Constants\HttpStatusCodeConstants;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\LogApiRequest;
+use App\Services\ErrorLogService;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\RecordNotFoundException;
+use Illuminate\Database\RecordsNotFoundException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\MessageBag;
+use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
+use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware): void {
+
+        $middleware->alias([
+            'auth' => Authenticate::class,
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'log.request' => LogApiRequest::class,
+        ]);
+
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        
+        // Stop ignoring exceptions to capture them in the error log
+        $exceptions->stopIgnoring(AuthenticationException::class);
+        $exceptions->stopIgnoring(AuthorizationException::class);
+        $exceptions->stopIgnoring(BackedEnumCaseNotFoundException::class);
+        $exceptions->stopIgnoring(HttpException::class);
+        $exceptions->stopIgnoring(HttpResponseException::class);
+        $exceptions->stopIgnoring(ModelNotFoundException::class);
+        $exceptions->stopIgnoring(RecordNotFoundException::class);
+        $exceptions->stopIgnoring(RecordsNotFoundException::class);
+        $exceptions->stopIgnoring(RequestExceptionInterface::class);
+        $exceptions->stopIgnoring(TokenMismatchException::class);
+        $exceptions->stopIgnoring(ValidationException::class);
+    
+        $exceptions->report(function (Throwable $exception): void {
+            ErrorLogService::capture($exception); // Log the exception in error_logs
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Exception - All Other Exceptions
+        |--------------------------------------------------------------------------
+        */
+        $exceptions->render(function (\Throwable $e, Request $request) {
+            
+            if (!$request->is('api/*'))
+            {
+                return null;
+            }
+
+            $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : HttpStatusCodeConstants::INTERNAL_SERVER_ERROR;
+
+            // ValidationException handling
+            if ($e instanceof ValidationException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors(), // always array
+                    'data' => null,
+                ], HttpStatusCodeConstants::UNPROCESSABLE_ENTITY);
+            }
+
+            // QueryException handling
+            if ($e instanceof QueryException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Database Query Error',
+                    'data' => null,
+                ], HttpStatusCodeConstants::INTERNAL_SERVER_ERROR);
+            }
+
+            // ModelNotFoundException handling
+            if ($e instanceof ModelNotFoundException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No matching record found',
+                    'data' => null,
+                ], HttpStatusCodeConstants::NOT_FOUND);
+            }
+
+            // NotFoundHttpException handling - for routes that don't exist
+            if ($e instanceof NotFoundHttpException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Resource not found',
+                    'data' => null,
+                ], HttpStatusCodeConstants::NOT_FOUND);
+            }
+
+            // AuthenticationException handling
+            if ($e instanceof AuthenticationException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Access denied',
+                    'data' => null,
+                ], HttpStatusCodeConstants::UNAUTHORIZED);
+            }
+
+            // AuthorizationException and UnauthorizedException handling
+            if ($e instanceof AuthorizationException || $e instanceof UnauthorizedException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Access prohibited',
+                    'data' => null,
+                ], HttpStatusCodeConstants::FORBIDDEN);
+            }
+
+            // MethodNotAllowedHttpException handling (eg. GET/PUT/POST/PATCH requests to wrong endpoints or missing HTTP method)
+            if ($e instanceof MethodNotAllowedHttpException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Route method not allowed',
+                    'data' => null,
+                ], HttpStatusCodeConstants::METHOD_NOT_ALLOWED);
+            }
+
+            // ValidationException handling
+            if ($e instanceof ValidationException)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors(),
+                    'data' => null,
+                ], HttpStatusCodeConstants::UNPROCESSABLE_ENTITY);
+            }
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Internal Server Error',
+                'data' => null,
+            ], $status);
+        });
+
+    })->create();
