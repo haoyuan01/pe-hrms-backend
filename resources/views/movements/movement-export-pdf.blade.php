@@ -199,7 +199,7 @@
     @if($movement->attachment_path)
         <tr>
             <td class="label">Attachment</td>
-            <td class="value" colspan="3">{{ asset(\Illuminate\Support\Facades\Storage::url($movement->attachment_path)) }}</td>
+            <td class="value" colspan="3">{{ asset(\Illuminate\Support\Facades\Storage::disk('public')->url($movement->attachment_path)) }}</td>
         </tr>
     @endif
 </table>

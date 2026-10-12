@@ -101,7 +101,7 @@
                                 <tr>
                                     <td colspan="2" style="padding:14px 16px; background:#ffffff;">
                                         <div style="font-size:13px; color:#6b7280; margin-bottom:4px;">Attachment</div>
-                                        <a href="{{ asset(\Illuminate\Support\Facades\Storage::url($data['overtime']->attachment_path)) }}" target="_blank" style="color:#17a2b8; text-decoration:none; font-size:14px; font-weight:600;">View Attachment</a>
+                                        <a href="{{ asset(\Illuminate\Support\Facades\Storage::disk('public')->url($data['overtime']->attachment_path)) }}" target="_blank" style="color:#17a2b8; text-decoration:none; font-size:14px; font-weight:600;">View Attachment</a>
                                     </td>
                                 </tr>
                             @endif

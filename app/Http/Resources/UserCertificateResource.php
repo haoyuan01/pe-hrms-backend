@@ -24,7 +24,7 @@ class UserCertificateResource extends JsonResource
             'date_applied' => $this->date_applied ? Carbon::parse($this->date_applied)->utc() : null,
             'valid_until' => $this->valid_until ? Carbon::parse($this->valid_until)->utc() : null,
             'days_to_expiry' => $this->valid_until ? (int) Carbon::today()->diffInDays(Carbon::parse($this->valid_until)->startOfDay(), false) : null,
-            'attachment_path' => $this->attachment_path ? asset(Storage::url($this->attachment_path)) : null,
+            'attachment_path' => $this->attachment_path ? Storage::disk('public')->url($this->attachment_path) : null,
             'attachment_name' => $this->attachment_name,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,

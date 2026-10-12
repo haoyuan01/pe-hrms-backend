@@ -21,7 +21,7 @@ class ClaimItemResource extends JsonResource
             'name' => $this->name,
             'amount' => $this->amount,
             'date' => $this->date ? Carbon::parse($this->date)->utc() : null,
-            'attachment_path' => $this->attachment_path ? asset(Storage::url($this->attachment_path)) : null,
+            'attachment_path' => $this->attachment_path ? Storage::disk('public')->url($this->attachment_path) : null,
             'remark' => $this->remark,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,

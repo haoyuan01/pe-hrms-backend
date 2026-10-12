@@ -30,7 +30,7 @@ class LeaveRequestResource extends JsonResource
             'resume_date' => $this->resume_date ? Carbon::parse($this->resume_date)->utc() : null,
             'total_days' => $this->total_days,
             'reason' => $this->reason,
-            'attachment_url' => $this->attachment_url ? asset(Storage::url($this->attachment_url)) : null,
+            'attachment_url' => $this->attachment_url ? Storage::disk('public')->url($this->attachment_url) : null,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,
             'created_at' => Carbon::parse($this->created_at)->utc(),

@@ -22,7 +22,7 @@ class MovementResource extends JsonResource
             'start_date' => $this->start_date ? Carbon::parse($this->start_date)->utc() : null,
             'end_date' => $this->end_date ? Carbon::parse($this->end_date)->utc() : null,
             'description' => $this->description,
-            'attachment_path' => $this->attachment_path ? asset(Storage::url($this->attachment_path)) : null,
+            'attachment_path' => $this->attachment_path ? Storage::disk('public')->url($this->attachment_path) : null,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,
             'created_at' => Carbon::parse($this->created_at)->utc(),

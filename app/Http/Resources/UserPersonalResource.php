@@ -25,7 +25,7 @@ class UserPersonalResource extends JsonResource
             'passport_number' => $this->passport_number,
             'passport_expiry_date' => $this->passport_expiry_date ? Carbon::parse($this->passport_expiry_date)->utc() : null,
             'blood_type' => $this->blood_type,
-            'image_path' => $this->image_path ? asset(Storage::url($this->image_path)) : null,
+            'image_path' => $this->image_path ? Storage::disk('public')->url($this->image_path) : null,
             'gender' => $this->gender,
             'is_married' => $this->is_married,
             'is_active' => $this->is_active,

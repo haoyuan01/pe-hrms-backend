@@ -129,7 +129,7 @@
                                         @endif
                                         @if($item->attachment_path)
                                             <div style="margin-top:6px; font-size:12px; line-height:1.5;">
-                                                <a href="{{ asset(\Illuminate\Support\Facades\Storage::url($item->attachment_path)) }}" target="_blank" style="color:#17a2b8; text-decoration:none; font-weight:600;">View Attachment</a>
+                                                <a href="{{ asset(\Illuminate\Support\Facades\Storage::disk('public')->url($item->attachment_path)) }}" target="_blank" style="color:#17a2b8; text-decoration:none; font-weight:600;">View Attachment</a>
                                             </div>
                                         @endif
                                     </td>

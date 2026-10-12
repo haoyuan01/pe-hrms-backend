@@ -21,7 +21,7 @@ class UserMedicalCertificateResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'date' => $this->date ? Carbon::parse($this->date)->utc() : null,
-            'attachment_path' => $this->attachment_path ? asset(Storage::url($this->attachment_path)) : null,
+            'attachment_path' => $this->attachment_path ? Storage::disk('public')->url($this->attachment_path) : null,
             'attachment_name' => $this->attachment_name,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,

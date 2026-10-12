@@ -104,7 +104,7 @@ class DashboardController extends Controller
             'total_users' => $total_users,
             'latest_payroll' => $payroll ? [
                 'date' => $payroll->year . '-' . str_pad($payroll->month, 2, '0', STR_PAD_LEFT) . '-01',
-                'attachment_url' => $payroll->attachment_path ? asset(Storage::url($payroll->attachment_path)) : null,
+                'attachment_url' => $payroll->attachment_path ? Storage::disk('public')->url($payroll->attachment_path) : null,
             ] : null,
         ];
 

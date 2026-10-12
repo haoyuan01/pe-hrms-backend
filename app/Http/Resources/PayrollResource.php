@@ -21,7 +21,7 @@ class PayrollResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'month' => $this->month,
             'year' => $this->year,
-            'attachment_path' => $this->attachment_path ? asset(Storage::url($this->attachment_path)) : null,
+            'attachment_path' => $this->attachment_path ? Storage::disk('public')->url($this->attachment_path) : null,
             'remark' => $this->remark,
             'is_published' => $this->is_published,
             'email_sent_at' => $this->email_sent_at ? Carbon::parse($this->email_sent_at)->utc() : null,
