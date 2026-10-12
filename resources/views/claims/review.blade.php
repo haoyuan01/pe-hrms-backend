@@ -70,6 +70,12 @@
                     <div class="item-meta"><strong>Amount:</strong> {{ number_format($item->amount, 2) }}</div>
                     <div class="item-meta"><strong>Date:</strong> {{ $item->date ? \Carbon\Carbon::parse($item->date)->format('Y-m-d') : '-' }}</div>
                     <div class="item-meta"><strong>Remark:</strong> {{ $item->remark ?: '-' }}</div>
+                    @if($item->attachment_path)
+                        <div class="item-meta">
+                            <strong>Attachment:</strong>
+                            <a href="{{ asset(\Illuminate\Support\Facades\Storage::disk('public')->url($item->attachment_path)) }}" target="_blank" rel="noopener noreferrer" style="color:#17a2b8; text-decoration:none; font-weight:600;">View Attachment</a>
+                        </div>
+                    @endif
                     <div class="item-meta">
                         <strong>Status:</strong>
                         @if($action_at)

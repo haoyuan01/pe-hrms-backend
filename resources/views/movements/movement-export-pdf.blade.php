@@ -123,7 +123,7 @@
 <table class="header-table">
     <tr>
         <td style="width: 58px;">
-            <img src="{{ url('images/petro-excel-logo-no-bg.png') }}" width="46">
+            <img src="{{ public_path('images/petro-excel-logo-no-bg.png') }}" width="46">
         </td>
         <td>
             <div class="company">Petro-Excel Sdn Bhd</div>
