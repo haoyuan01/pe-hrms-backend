@@ -724,8 +724,6 @@ return array(
     'Egulias\\EmailValidator\\Warning\\QuotedString' => $vendorDir . '/egulias/email-validator/src/Warning/QuotedString.php',
     'Egulias\\EmailValidator\\Warning\\TLD' => $vendorDir . '/egulias/email-validator/src/Warning/TLD.php',
     'Egulias\\EmailValidator\\Warning\\Warning' => $vendorDir . '/egulias/email-validator/src/Warning/Warning.php',
-    'EvoMark\\EvoLaravelBrevo\\ServiceProvider' => $vendorDir . '/evo-mark/evo-laravel-brevo/src/ServiceProvider.php',
-    'EvoMark\\EvoLaravelBrevo\\Transports\\BrevoTransport' => $vendorDir . '/evo-mark/evo-laravel-brevo/src/Transports/BrevoTransport.php',
     'Faker\\Calculator\\Ean' => $vendorDir . '/fakerphp/faker/src/Faker/Calculator/Ean.php',
     'Faker\\Calculator\\Iban' => $vendorDir . '/fakerphp/faker/src/Faker/Calculator/Iban.php',
     'Faker\\Calculator\\Inn' => $vendorDir . '/fakerphp/faker/src/Faker/Calculator/Inn.php',

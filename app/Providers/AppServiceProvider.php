@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Constants\ConfigurationCodeConstants;
+use App\Mail\Transports\BrevoTransport;
 use App\Models\Configuration;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,5 +60,9 @@ class AppServiceProvider extends ServiceProvider
                 ->value('value') ?? 7; // default as 7 days expiry
         });
         config(['sanctum.expiration' => $bearer_token_expiry * 24 * 60]);
+
+        Mail::extend('brevo', function () {
+            return new BrevoTransport();
+        });
     }
 }

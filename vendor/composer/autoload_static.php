@@ -264,7 +264,6 @@ class ComposerStaticInitab2af223bb8223b5648b2bf5538dfb37
         ),
         'E' => 
         array (
-            'EvoMark\\EvoLaravelBrevo\\' => 24,
             'Egulias\\EmailValidator\\' => 23,
         ),
         'D' => 
@@ -664,10 +663,6 @@ class ComposerStaticInitab2af223bb8223b5648b2bf5538dfb37
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
-        ),
-        'EvoMark\\EvoLaravelBrevo\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/evo-mark/evo-laravel-brevo/src',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
@@ -1482,8 +1477,6 @@ class ComposerStaticInitab2af223bb8223b5648b2bf5538dfb37
         'Egulias\\EmailValidator\\Warning\\QuotedString' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/QuotedString.php',
         'Egulias\\EmailValidator\\Warning\\TLD' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/TLD.php',
         'Egulias\\EmailValidator\\Warning\\Warning' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/Warning.php',
-        'EvoMark\\EvoLaravelBrevo\\ServiceProvider' => __DIR__ . '/..' . '/evo-mark/evo-laravel-brevo/src/ServiceProvider.php',
-        'EvoMark\\EvoLaravelBrevo\\Transports\\BrevoTransport' => __DIR__ . '/..' . '/evo-mark/evo-laravel-brevo/src/Transports/BrevoTransport.php',
         'Faker\\Calculator\\Ean' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Ean.php',
         'Faker\\Calculator\\Iban' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Iban.php',
         'Faker\\Calculator\\Inn' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Inn.php',
