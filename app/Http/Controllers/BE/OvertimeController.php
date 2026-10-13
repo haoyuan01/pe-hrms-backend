@@ -322,7 +322,7 @@ class OvertimeController extends Controller
             $sheet->setCellValue('A' . $row, ($overtime->firstItem() ?? 1) + $key);
             $sheet->setCellValue('B' . $row, trim(($item->user->personal?->first_name ?? '') . ' ' . ($item->user->personal?->last_name ?? '')) ?: $item->user->email);
             $sheet->setCellValue('C' . $row, $item->user->email);
-            $sheet->setCellValue('D' . $row, $item->user->contact?->company_email);
+            $sheet->setCellValue('D' . $row, $item->user->contact?->personal_email);
             $sheet->setCellValue('E' . $row, $item->user->contact?->phone_number);
             $sheet->setCellValue('F' . $row, $item->user->employment?->department?->name);
             $sheet->setCellValue('G' . $row, $item->user->employment?->position?->name);

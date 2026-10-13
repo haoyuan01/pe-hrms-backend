@@ -24,7 +24,7 @@ class UserContactUpdateRequest extends FormRequest
     {
         return [
             'user_uuid' => ['required', 'string', 'uuid'],
-            'company_email' => ['nullable', 'email'],
+            'personal_email' => ['nullable', 'email'],
             'phone_number' => ['nullable', 'string'],
             'address_1' => ['nullable', 'string'],
             'address_2' => ['nullable', 'string'],

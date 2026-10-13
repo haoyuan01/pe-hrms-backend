@@ -68,10 +68,10 @@ class MovementFilter
             });
         }
 
-        if ($filters->has('company_email') && !empty($filters->company_email))
+        if ($filters->has('personal_email') && !empty($filters->personal_email))
         {
             $data->whereHas('user.contact', function($query) use ($filters) {
-                $query->where('company_email', 'like', "%$filters->company_email%");
+                $query->where('personal_email', 'like', "%$filters->personal_email%");
             });
         }
 

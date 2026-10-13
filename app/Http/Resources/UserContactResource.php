@@ -17,7 +17,7 @@ class UserContactResource extends JsonResource
     {
         $data = [
             'uuid' => $this->uuid,
-            'company_email' => $this->company_email,
+            'personal_email' => $this->personal_email,
             'phone_number' => $this->phone_number,
             'address_1' => $this->address_1,
             'address_2' => $this->address_2,

@@ -35,7 +35,7 @@ class MovementIndexRequest extends FormRequest
             'user_uuid' => ['nullable', 'string', 'uuid'],
             'user_name' => ['nullable', 'string', 'regex:' . RegexConstants::INJECTION_PROTECTED],
             'email' => ['nullable', 'string', 'regex:' . RegexConstants::EMAIL],
-            'company_email' => ['nullable', 'string', 'regex:' . RegexConstants::EMAIL],
+            'personal_email' => ['nullable', 'string', 'regex:' . RegexConstants::EMAIL],
             'phone_number' => ['nullable', 'string', 'regex:' . RegexConstants::INJECTION_PROTECTED],
             'department' => ['nullable', 'string', 'regex:' . RegexConstants::INJECTION_PROTECTED],
             'position' => ['nullable', 'string', 'regex:' . RegexConstants::INJECTION_PROTECTED],

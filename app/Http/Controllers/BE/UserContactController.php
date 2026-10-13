@@ -20,7 +20,7 @@ class UserContactController extends Controller
         
         $contact = [
             'user_id' => $user->id,
-            'company_email' => $request->company_email,
+            'personal_email' => $request->personal_email,
             'phone_number' => $request->phone_number,
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,

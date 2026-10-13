@@ -68,10 +68,10 @@ class UserFilter
             });
         }
 
-        if ($filters->has('company_email') && !empty($filters->company_email))
+        if ($filters->has('personal_email') && !empty($filters->personal_email))
         {
             $data->whereHas('contact', function($query) use ($filters) {
-                $query->where('company_email', 'like', "%$filters->company_email%");
+                $query->where('personal_email', 'like', "%$filters->personal_email%");
             });
         }
 
@@ -142,7 +142,7 @@ class UserFilter
         // {
         //     $data->whereHas('contact', function($query) use ($filters) {
         //         $query->where('phone_number', 'like', "%$filters->contact%")
-        //             ->orWhere('company_email', 'like', "%$filters->contact%")
+        //             ->orWhere('personal_email', 'like', "%$filters->contact%")
         //             ->orWhere(DB::raw("CONCAT_WS(address_1,'',address_2,'',address_3)"), 'like', "%$filters->contact%")
         //             ->orWhere('city', 'like', "%$filters->contact%")
         //             ->orWhere('state', 'like', "%$filters->contact%")

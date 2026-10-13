@@ -56,7 +56,7 @@ class UserUpdateRequest extends FormRequest
             'personal.is_married' => ['nullable', 'boolean'],
 
             // contact
-            'contact.company_email' => ['nullable', 'email'],
+            'contact.personal_email' => ['nullable', 'email'],
             'contact.phone_number' => ['nullable', 'string'],
             'contact.address_1' => ['nullable', 'string'],
             'contact.address_2' => ['nullable', 'string'],

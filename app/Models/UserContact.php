@@ -22,7 +22,7 @@ class UserContact extends Model
     public $fillable = [
         'uuid',
         'user_id',
-        'company_email',
+        'personal_email',
         'phone_number',
         'address_1',
         'address_2',

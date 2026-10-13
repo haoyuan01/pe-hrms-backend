@@ -148,7 +148,7 @@
     </tr>
     <tr>
         <td class="label">Company Email</td>
-        <td class="value">{{ $contact?->company_email ?: '-' }}</td>
+        <td class="value">{{ $contact?->personal_email ?: '-' }}</td>
         <td class="label">Phone Number</td>
         <td class="value">{{ $contact?->phone_number ?: '-' }}</td>
     </tr>

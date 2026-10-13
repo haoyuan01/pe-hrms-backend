@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('user_id');
-            $table->string('company_email', 350)->nullable();
+            $table->string('personal_email', 350)->nullable();
             $table->string('phone_number', 25)->nullable();
             $table->string('address_1', 255)->nullable();
             $table->string('address_2', 255)->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
 
             // index
             $table->index('user_id');
-            $table->index('company_email');
+            $table->index('personal_email');
             $table->index('phone_number');
             $table->index('is_active');
 

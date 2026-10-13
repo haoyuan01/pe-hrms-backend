@@ -27,7 +27,7 @@ class UserIndexRequest extends FormRequest
             'user_uuid' => ['nullable', 'string', 'uuid'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'string', 'email'],
-            'company_email' => ['nullable', 'string', 'email'],
+            'personal_email' => ['nullable', 'string', 'email'],
             'phone_number' => ['nullable', 'string'],
             'address' => ['nullable', 'string'],
             'city' => ['nullable', 'string'],

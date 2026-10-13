@@ -114,7 +114,7 @@ class UserController extends Controller
                 $user->contact()->create([
                     'uuid' => self::uuid(),
                     'user_id' => $user->id,
-                    'company_email' => $request->input('contact.company_email'),
+                    'personal_email' => $request->input('contact.personal_email'),
                     'phone_number' => $request->input('contact.phone_number'),
                     'address_1' => $request->input('contact.address_1'),
                     'address_2' => $request->input('contact.address_2'),
@@ -284,7 +284,7 @@ class UserController extends Controller
             {
                 $contact = [
                     'user_id' => $user->id,
-                    'company_email' => $request->input('contact.company_email'),
+                    'personal_email' => $request->input('contact.personal_email'),
                     'phone_number' => $request->input('contact.phone_number'),
                     'address_1' => $request->input('contact.address_1'),
                     'address_2' => $request->input('contact.address_2'),
