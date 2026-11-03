@@ -79,7 +79,7 @@ class ClaimHeaderController extends Controller
 
         $user = self::auth();
 
-        if ($request->has('show_all') && $request->show_all && ($user->employment?->is_manager || $user->employment?->is_director))
+        if ($request->has('show_all') && $request->show_all && ($user->employment?->is_manager || $user->employment?->is_director || $user->employment?->is_accountant))
         {
             $claim_header->where('user_id', '!=', $user->id);
 
@@ -94,6 +94,18 @@ class ClaimHeaderController extends Controller
                     ->whereDoesntHave('claimItems', function ($query) {
                         $query->whereNull('manager_approved')
                             ->orWhere('manager_approved', StatusCodeConstants::INACTIVE);
+                    });
+            }
+
+            if ($user->employment?->is_accountant)
+            {
+                $claim_header->whereNotNull('manager_reviewed_at')
+                    ->whereNotNull('director_reviewed_at')
+                    ->whereDoesntHave('claimItems', function ($query) {
+                        $query->whereNull('manager_approved')
+                            ->orWhere('manager_approved', StatusCodeConstants::INACTIVE)
+                            ->orWhereNull('director_approved')
+                            ->orWhere('director_approved', StatusCodeConstants::INACTIVE);
                     });
             }
         }

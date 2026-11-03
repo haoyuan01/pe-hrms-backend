@@ -9,7 +9,7 @@ class LeaveRequestFilter
 {
     public function apply(Request $filters, $size, $data)
     {
-        if ($filters->has('show_all') && $filters->show_all)
+        if ($filters->has('show_all') && $filters->show_all && (Auth::user()->employment?->is_manager || Auth::user()->employment?->is_director))
         {
             $data->where('user_id', '!=', Auth::user()->id);
 

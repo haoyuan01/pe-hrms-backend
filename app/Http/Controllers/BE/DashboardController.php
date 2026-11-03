@@ -48,43 +48,50 @@ class DashboardController extends Controller
         //         return ($leave_entitlement->entitled_days + $leave_entitlement->carried_forward_days) - $leave_entitlement->used_days;
         //     });
 
-        $leave_request = LeaveRequest::where(function ($query) {
-                $query->where('manager_approved', '!=', StatusCodeConstants::ACTIVE)
-                    ->orWhere('handover_approved', '!=', StatusCodeConstants::ACTIVE)
-                    ->orWhere('director_approved', '!=', StatusCodeConstants::ACTIVE);
-            })
-            ->active();
+        $pending_leave = 0;
 
-        if ($request->relevant_to_me)
+        if ($user->employment?->is_director)
         {
-            $leave_request->where('user_id', $user->id);
+            $pending_leave = LeaveRequest::where('user_id', '!=', $user->id)
+                ->where('manager_approved', StatusCodeConstants::ACTIVE)
+                ->whereNull('director_action_at')
+                ->active()
+                ->count();
         }
-
-        $pending_leave = $leave_request->count();
+        else if ($user->employment?->is_manager)
+        {
+            $pending_leave = LeaveRequest::where('user_id', '!=', $user->id)
+                ->where('manager_approver_id', $user->id)
+                ->whereNull('manager_action_at')
+                ->active()
+                ->count();
+        }
 
         $leave_request_current_month = LeaveRequest::whereMonth('created_at', self::currentDateTime()->format('m'))
             ->whereYear('created_at', self::currentDateTime()->format('Y'))
-            ->active();
+            ->active()
+            ->count();
 
-        if ($request->relevant_to_me)
+        $pending_claim = 0;
+
+        if ($user->employment?->is_director)
         {
-            $leave_request_current_month->where('user_id', $user->id);
+            $pending_claim = ClaimHeader::whereNotNull('manager_reviewed_at')
+                ->whereNull('director_reviewed_at')
+                ->whereDoesntHave('claimItems', function ($query) {
+                    $query->whereNull('manager_approved')
+                        ->orWhere('manager_approved', StatusCodeConstants::INACTIVE);
+                })
+                ->active()
+                ->count();
         }
-
-        $leave_request_current_month = $leave_request_current_month->count();
-
-        $claim_header = ClaimHeader::where(function ($query) {
-                $query->whereNull('manager_reviewed_at')
-                    ->orWhereNull('director_reviewed_at');
-            })
-            ->active();
-
-        if ($request->relevant_to_me)
+        else if ($user->employment?->is_manager)
         {
-            $claim_header->where('user_id', $user->id);
+            $pending_claim = ClaimHeader::where('manager_approver_id', $user->id)
+                ->whereNull('manager_reviewed_at')
+                ->active()
+                ->count();
         }
-
-        $pending_claim = $claim_header->count();
 
         $total_users = User::where('is_active', StatusCodeConstants::ACTIVE)
             ->count();
