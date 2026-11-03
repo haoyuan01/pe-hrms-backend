@@ -523,12 +523,41 @@ class LeaveRequestController extends Controller
     {
         $leave_request = LeaveRequest::active();
 
-        if ($request->user_uuid)
+        if ($request->has('show_all') && $request->show_all)
         {
-            $user = User::findByUuid($request->user_uuid);
+            $user = self::auth();
 
-            $leave_request->where('user_id', $user->id);
+            $leave_request->where('user_id', '!=', $user->id);
+
+            if ($user->employment?->is_manager)
+            {
+                $leave_request->where('manager_approver_id', $user->id);
+            }
+
+            if ($user->employment?->is_director)
+            {
+                $leave_request->where('manager_approved', true);
+            }
         }
+        else
+        {
+            $leave_request->where('user_id', self::auth()->id);
+        }
+
+        if ($request->has('month_year') && !empty($request->month_year))
+        {
+            $month_year = explode('-', $request->month_year);
+
+            $leave_request->whereMonth('created_at', $month_year[0])
+                ->whereYear('created_at', $month_year[1]);
+        }
+
+        // if ($request->user_uuid)
+        // {
+        //     $user = User::findByUuid($request->user_uuid);
+
+        //     $leave_request->where('user_id', $user->id);
+        // }
 
         $data = [
             'total' => (clone $leave_request)->count(),

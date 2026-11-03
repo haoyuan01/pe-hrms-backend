@@ -23,7 +23,9 @@ class LeaveRequestStatusSummaryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_uuid' => ['nullable', 'string', 'uuid'],
+            'show_all' => ['nullable', 'boolean'],
+            'month_year' => ['nullable', 'date_format:m-Y'],
+            // 'user_uuid' => ['nullable', 'string', 'uuid'],
         ];
     }
 }
