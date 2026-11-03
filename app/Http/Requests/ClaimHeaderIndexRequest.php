@@ -24,14 +24,15 @@ class ClaimHeaderIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'show_all' => ['nullable', 'boolean'],
             'uuid' => ['nullable', 'string', 'uuid'],
-            'user_uuid' => ['nullable', 'string', 'uuid'],
-            'manager_approver_uuid' => ['nullable', 'string', 'uuid'],
-            'user_department_uuid' => ['nullable', 'string', 'uuid'],
-            'user_office_uuid' => ['nullable', 'string', 'uuid'],
-            'user_position_uuid' => ['nullable', 'string', 'uuid'],
+            // 'user_uuid' => ['nullable', 'string', 'uuid'],
+            // 'manager_approver_uuid' => ['nullable', 'string', 'uuid'],
+            // 'user_department_uuid' => ['nullable', 'string', 'uuid'],
+            // 'user_office_uuid' => ['nullable', 'string', 'uuid'],
+            // 'user_position_uuid' => ['nullable', 'string', 'uuid'],
             'name' => ['nullable', 'string', 'regex:' . RegexConstants::INJECTION_PROTECTED],
-            'relevant_to_me' => ['nullable', 'boolean'],
+            // 'relevant_to_me' => ['nullable', 'boolean'],
             'start_date' => ['nullable', 'date'],
             'end_date'   => ['nullable', 'date', 'after_or_equal:start_date'],
             'created_at_from' => ['nullable', 'date_format:Y-m-d'],

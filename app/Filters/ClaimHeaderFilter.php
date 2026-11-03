@@ -14,50 +14,50 @@ class ClaimHeaderFilter
             $data->where('uuid', $filters->uuid);
         }
 
-        if ($filters->has('user_uuid') && !empty($filters->user_uuid))
-        {
-            $data->whereHas('user', function($query) use ($filters) {
-                $query->where('uuid', $filters->user_uuid);
-            });
-        }
+        // if ($filters->has('user_uuid') && !empty($filters->user_uuid))
+        // {
+        //     $data->whereHas('user', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->user_uuid);
+        //     });
+        // }
 
-        if ('user_department_uuid' && !empty($filters->user_department_uuid))
-        {
-            $data->whereHas('user.employment.department', function($query) use ($filters) {
-                $query->where('uuid', $filters->user_department_uuid);
-            });
-        }
+        // if ('user_department_uuid' && !empty($filters->user_department_uuid))
+        // {
+        //     $data->whereHas('user.employment.department', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->user_department_uuid);
+        //     });
+        // }
 
-        if ($filters->has('is_director') && $filters->is_director >= 0)
-        {
-            $data->where('manager_reviewed_at', '!=', null);
-        }
+        // if ($filters->has('is_director') && $filters->is_director >= 0)
+        // {
+        //     $data->where('manager_reviewed_at', '!=', null);
+        // }
 
-        if ($filters->has('user_office_uuid') && !empty($filters->user_office_uuid))
-        {
-            $data->whereHas('user.employment.office', function($query) use ($filters) {
-                $query->where('uuid', $filters->user_office_uuid);
-            });
-        }
+        // if ($filters->has('user_office_uuid') && !empty($filters->user_office_uuid))
+        // {
+        //     $data->whereHas('user.employment.office', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->user_office_uuid);
+        //     });
+        // }
 
-        if ($filters->has('user_position_uuid') && !empty($filters->user_position_uuid))
-        {
-            $data->whereHas('user.employment.position', function($query) use ($filters) {
-                $query->where('uuid', $filters->user_position_uuid);
-            });
-        }
+        // if ($filters->has('user_position_uuid') && !empty($filters->user_position_uuid))
+        // {
+        //     $data->whereHas('user.employment.position', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->user_position_uuid);
+        //     });
+        // }
 
-        if ($filters->has('manager_approver_uuid') && !empty($filters->manager_approver_uuid))
-        {
-            $data->whereHas('managerApprover', function($query) use ($filters) {
-                $query->where('uuid', $filters->manager_approver_uuid);
-            });
-        }
+        // if ($filters->has('manager_approver_uuid') && !empty($filters->manager_approver_uuid))
+        // {
+        //     $data->whereHas('managerApprover', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->manager_approver_uuid);
+        //     });
+        // }
 
-        if ($filters->has('relevant_to_me') && $filters->relevant_to_me)
-        {
-            $data->where('user_id', Auth::user()->id);
-        }
+        // if ($filters->has('relevant_to_me') && $filters->relevant_to_me)
+        // {
+        //     $data->where('user_id', Auth::user()->id);
+        // }
         
         if ($filters->has('name') && !empty($filters->name))
         {

@@ -77,6 +77,27 @@ class ClaimHeaderController extends Controller
             'claimItems.directorActionBy.emergency',
         ])->active();
 
+        $user = self::auth();
+
+        if ($request->has('show_all') && $request->show_all && ($user->employment?->is_manager || $user->employment?->is_director))
+        {
+            $claim_header->where('user_id', '!=', $user->id);
+
+            if ($user->employment?->is_manager)
+            {
+                $claim_header->where('manager_approver_id', $user->id);
+            }
+
+            if ($user->employment?->is_director)
+            {
+                $claim_header->whereNotNull('manager_reviewed_at');
+            }
+        }
+        else
+        {
+            $claim_header->where('user_id', $user->id);
+        }
+
         $claim_header = $this->claim_header_filter->apply($request, $request->size, $claim_header);
 
         return self::responsePaginated(ClaimHeaderResource::collection($claim_header), $claim_header);
