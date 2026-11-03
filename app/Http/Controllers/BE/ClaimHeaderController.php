@@ -90,7 +90,11 @@ class ClaimHeaderController extends Controller
 
             if ($user->employment?->is_director)
             {
-                $claim_header->whereNotNull('manager_reviewed_at');
+                $claim_header->whereNotNull('manager_reviewed_at')
+                    ->whereDoesntHave('claimItems', function ($query) {
+                        $query->whereNull('manager_approved')
+                            ->orWhere('manager_approved', StatusCodeConstants::INACTIVE);
+                    });
             }
         }
         else
