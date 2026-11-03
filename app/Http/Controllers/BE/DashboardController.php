@@ -69,8 +69,28 @@ class DashboardController extends Controller
 
         $leave_request_current_month = LeaveRequest::whereMonth('created_at', self::currentDateTime()->format('m'))
             ->whereYear('created_at', self::currentDateTime()->format('Y'))
-            ->active()
-            ->count();
+            ->active();
+
+        if ($user->employment?->is_manager || $user->employment?->is_director)
+        {
+            $leave_request_current_month->where('user_id', '!=', $user->id);
+
+            if ($user->employment?->is_manager)
+            {
+                $leave_request_current_month->where('manager_approver_id', $user->id);
+            }
+
+            if ($user->employment?->is_director)
+            {
+                $leave_request_current_month->where('manager_approved', StatusCodeConstants::ACTIVE);
+            }
+        }
+        else
+        {
+            $leave_request_current_month->where('user_id', $user->id);
+        }
+
+        $leave_request_current_month = $leave_request_current_month->count();
 
         $pending_claim = 0;
 
