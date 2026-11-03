@@ -9,24 +9,51 @@ class LeaveRequestFilter
 {
     public function apply(Request $filters, $size, $data)
     {
+        if ($filters->has('show_all') && $filters->show_all)
+        {
+            $data->where('user_id', '!=', Auth::user()->id);
+
+            if (Auth::user()->employment?->is_manager)
+            {
+                $data->where('manager_approver_id', Auth::user()->id);
+            }
+
+            if (Auth::user()->employment?->is_director)
+            {
+                $data->where('manager_approved', true);
+            }
+        }
+        else
+        {
+            $data->where('user_id', Auth::user()->id);
+        }
+
+        if ($filters->has('month_year') && !empty($filters->month_year))
+        {
+            $month_year = explode('-', $filters->month_year);
+
+            $data->whereMonth('created_at', $month_year[0])
+                ->whereYear('created_at', $month_year[1]);
+        }
+
         if ($filters->has('uuid') && !empty($filters->uuid))
         {
             $data->where('uuid', $filters->uuid);
         }
 
-        if ($filters->has('user_uuid') && !empty($filters->user_uuid))
-        {
-            $data->whereHas('user', function($query) use ($filters) {
-                $query->where('uuid', $filters->user_uuid);
-            });
-        }
+        // if ($filters->has('user_uuid') && !empty($filters->user_uuid))
+        // {
+        //     $data->whereHas('user', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->user_uuid);
+        //     });
+        // }
 
-        if ($filters->has('manager_approver_uuid') && !empty($filters->manager_approver_uuid))
-        {
-            $data->whereHas('managerApprover', function($query) use ($filters) {
-                $query->where('uuid', $filters->manager_approver_uuid);
-            });
-        }
+        // if ($filters->has('manager_approver_uuid') && !empty($filters->manager_approver_uuid))
+        // {
+        //     $data->whereHas('managerApprover', function($query) use ($filters) {
+        //         $query->where('uuid', $filters->manager_approver_uuid);
+        //     });
+        // }
 
         if ($filters->has('leave_entitlement_policy') && !empty($filters->leave_entitlement_policy))
         {
@@ -37,15 +64,15 @@ class LeaveRequestFilter
             });
         }
 
-        if ($filters->has('relevant_to_me') && $filters->relevant_to_me)
-        {
-            $data->where('user_id', Auth::user()->id);
-        }
+        // if ($filters->has('relevant_to_me') && $filters->relevant_to_me)
+        // {
+        //     $data->where('user_id', Auth::user()->id);
+        // }
 
-        if ($filters->has('is_director') && $filters->is_director >= 0)
-        {
-            $data->where('manager_action_at', '!=', null);
-        }
+        // if ($filters->has('is_director') && $filters->is_director >= 0)
+        // {
+        //     $data->where('manager_action_at', '!=', null);
+        // }
 
         if ($filters->has('created_at_from') && $filters->has('created_at_to'))
         {
