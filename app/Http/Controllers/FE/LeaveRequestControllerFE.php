@@ -120,7 +120,7 @@ class LeaveRequestControllerFE extends Controller
                         'action_label' => 'Review Leave',
                     ];
 
-                    Mail::to($leave_request->managerApprover->email)->send(new LeaveApplicationMail($data));
+                    Mail::to($leave_request->managerApprover->contact?->personal_email)->send(new LeaveApplicationMail($data));
                 }
             }
             else if ($type == 'manager')
@@ -160,7 +160,7 @@ class LeaveRequestControllerFE extends Controller
                             'action_label' => 'Review Leave',
                         ];
 
-                        Mail::to($director->email)->send(new LeaveApplicationMail($data));
+                        Mail::to($director->contact?->personal_email)->send(new LeaveApplicationMail($data));
                     }
                 }
             }

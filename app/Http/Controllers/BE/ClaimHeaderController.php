@@ -201,7 +201,7 @@ class ClaimHeaderController extends Controller
                     'action_label' => 'Review Claim',
                 ];
 
-                Mail::to($manager_approver->email)->send(new ClaimApplicationMail($data));
+                Mail::to($manager_approver->contact?->personal_email)->send(new ClaimApplicationMail($data));
             }
 
             $claim_header->load([
@@ -344,7 +344,7 @@ class ClaimHeaderController extends Controller
                     'action_label' => 'Review Claim',
                 ];
 
-                Mail::to($new_manager->email)->send(new ClaimApplicationMail($data));
+                Mail::to($new_manager->contact?->personal_email)->send(new ClaimApplicationMail($data));
             }
 
             $claim_header->load([
@@ -487,7 +487,7 @@ class ClaimHeaderController extends Controller
                             'action_label' => 'Review Claim',
                         ];
 
-                        Mail::to($director->email)->send(new ClaimApplicationMail($data));
+                        Mail::to($director->contact?->personal_email)->send(new ClaimApplicationMail($data));
                     }
                 }
             
@@ -629,11 +629,11 @@ class ClaimHeaderController extends Controller
 
         if ($is_rejected)
         {
-            Mail::to($claim_header->user->email)->send(new ClaimApplicationMail($data));
+            Mail::to($claim_header->user->contact?->personal_email)->send(new ClaimApplicationMail($data));
         }
         else
         {
-            Mail::to($claim_header->user->email)->cc($accountants->pluck('email')->filter()->values()->toArray())->send(new ClaimApplicationMail($data));
+            Mail::to($claim_header->user->contact?->personal_email)->cc($accountants->pluck('contact.personal_email')->filter()->values()->toArray())->send(new ClaimApplicationMail($data));
         }
     }
 

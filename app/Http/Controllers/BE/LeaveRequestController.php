@@ -169,7 +169,7 @@ class LeaveRequestController extends Controller
                     'action_label' => 'Review Handover',
                 ];
 
-                Mail::to($handover_by->email)->send(new LeaveApplicationMail($data));
+                Mail::to($handover_by->contact?->personal_email)->send(new LeaveApplicationMail($data));
             }
             else
             {
@@ -187,7 +187,7 @@ class LeaveRequestController extends Controller
                     'action_label' => 'Review Leave',
                 ];
 
-                Mail::to($manager_approver->email)->send(new LeaveApplicationMail($data));
+                Mail::to($manager_approver->contact?->personal_email)->send(new LeaveApplicationMail($data));
             }
 
             $leave_request->load([
@@ -328,7 +328,7 @@ class LeaveRequestController extends Controller
         //             'action_label' => 'Review Handover',
         //         ];
 
-        //         Mail::to($handover_by->email)->send(new LeaveApplicationMail($data));
+        //         Mail::to($handover_by->contact?->personal_email)->send(new LeaveApplicationMail($data));
         //     }
         //     else if (!$handover_by && $new_manager->id != $old_manager_id) // only send email if manager is updated
         //     {
@@ -346,7 +346,7 @@ class LeaveRequestController extends Controller
         //             'action_label' => 'Review Leave',
         //         ];
 
-        //         Mail::to($new_manager->email)->send(new LeaveApplicationMail($data));
+        //         Mail::to($new_manager->contact?->personal_email)->send(new LeaveApplicationMail($data));
         //     }
 
         //     $leave_request->load([
@@ -629,7 +629,7 @@ class LeaveRequestController extends Controller
                             'action_label' => 'Review Leave',
                         ];
 
-                        Mail::to($director->email)->send(new LeaveApplicationMail($data));
+                        Mail::to($director->contact?->personal_email)->send(new LeaveApplicationMail($data));
                     }
                 }
             }

@@ -93,7 +93,7 @@ class AuthController extends Controller
                 'reset_password_link' => $reset_password_link,
             ];
 
-            Mail::to($user->email)->send(new ForgotPasswordMail($data));
+            Mail::to($user->contact?->personal_email)->send(new ForgotPasswordMail($data));
 
             DB::commit();
             
@@ -148,7 +148,7 @@ class AuthController extends Controller
                 'reset_passcode_link' => $reset_passcode_link,
             ];
 
-            Mail::to($user->email)->send(new ForgotPasscodeMail($data));
+            Mail::to($user->contact?->personal_email)->send(new ForgotPasscodeMail($data));
 
             DB::commit();
 

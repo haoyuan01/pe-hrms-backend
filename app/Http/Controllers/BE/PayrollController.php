@@ -235,7 +235,7 @@ class PayrollController extends Controller
             'action_url' => url('/payroll-preview?token=' . $token . '&email=' . urlencode($payroll->user->email) . '&payroll_uuid=' . $payroll->uuid),
         ];
 
-        Mail::to($payroll->user->email)->send(new PayrollNotificationMail($data));
+        Mail::to($payroll->user->contact?->personal_email)->send(new PayrollNotificationMail($data));
 
         $payroll->update([
             'email_sent_at' => self::currentDateTime(),

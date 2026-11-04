@@ -111,7 +111,7 @@ class PayrollControllerFE extends Controller
             'reset_passcode_link' => $reset_passcode_link,
         ];
 
-        Mail::to($user->email)->send(new ForgotPasscodeMail($data));
+        Mail::to($user->contact?->personal_email)->send(new ForgotPasscodeMail($data));
 
         return view('payrolls.preview-passcode-email-sent', [
             'name' => trim(($user->personal?->first_name ?? '') . ' ' . ($user->personal?->last_name ?? '')) ?: $user->email,

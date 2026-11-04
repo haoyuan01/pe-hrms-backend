@@ -138,7 +138,7 @@ class OvertimeControllerFE extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($accountant->email)->send(new OvertimeApplicationMail($data));
+            Mail::to($accountant->contact?->personal_email)->send(new OvertimeApplicationMail($data));
         }
     }
 }

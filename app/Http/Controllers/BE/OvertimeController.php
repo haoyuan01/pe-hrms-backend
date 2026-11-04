@@ -199,7 +199,7 @@ class OvertimeController extends Controller
                 'action_label' => 'Review Overtime',
             ];
 
-            Mail::to($director->email)->send(new OvertimeApplicationMail($data));
+            Mail::to($director->contact?->personal_email)->send(new OvertimeApplicationMail($data));
         }
     }
 
@@ -228,7 +228,7 @@ class OvertimeController extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($accountant->email)->send(new OvertimeApplicationMail($data));
+            Mail::to($accountant->contact?->personal_email)->send(new OvertimeApplicationMail($data));
         }
     }
 
@@ -258,7 +258,7 @@ class OvertimeController extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($director->email)->send(new OvertimeApplicationMail($data));
+            Mail::to($director->contact?->personal_email)->send(new OvertimeApplicationMail($data));
         }
     }
 
