@@ -19,7 +19,7 @@ use App\Models\ClaimHeader;
 use App\Models\ClaimItem;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -201,7 +201,7 @@ class ClaimHeaderController extends Controller
                     'action_label' => 'Review Claim',
                 ];
 
-                Mail::to($manager_approver->contact?->personal_email)->send(new ClaimApplicationMail($data));
+                PersonalEmailMailer::send($manager_approver, new ClaimApplicationMail($data));
             }
 
             $claim_header->load([
@@ -344,7 +344,7 @@ class ClaimHeaderController extends Controller
                     'action_label' => 'Review Claim',
                 ];
 
-                Mail::to($new_manager->contact?->personal_email)->send(new ClaimApplicationMail($data));
+                PersonalEmailMailer::send($new_manager, new ClaimApplicationMail($data));
             }
 
             $claim_header->load([
@@ -487,7 +487,7 @@ class ClaimHeaderController extends Controller
                             'action_label' => 'Review Claim',
                         ];
 
-                        Mail::to($director->contact?->personal_email)->send(new ClaimApplicationMail($data));
+                        PersonalEmailMailer::send($director, new ClaimApplicationMail($data));
                     }
                 }
             
@@ -629,11 +629,11 @@ class ClaimHeaderController extends Controller
 
         if ($is_rejected)
         {
-            Mail::to($claim_header->user->contact?->personal_email)->send(new ClaimApplicationMail($data));
+            PersonalEmailMailer::send($claim_header->user, new ClaimApplicationMail($data));
         }
         else
         {
-            Mail::to($claim_header->user->contact?->personal_email)->cc($accountants->pluck('contact.personal_email')->filter()->values()->toArray())->send(new ClaimApplicationMail($data));
+            PersonalEmailMailer::send($claim_header->user, new ClaimApplicationMail($data), $accountants);
         }
     }
 

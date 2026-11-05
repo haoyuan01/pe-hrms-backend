@@ -11,7 +11,7 @@ use App\Models\LeaveRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 
 class LeaveRequestControllerFE extends Controller
@@ -120,7 +120,7 @@ class LeaveRequestControllerFE extends Controller
                         'action_label' => 'Review Leave',
                     ];
 
-                    Mail::to($leave_request->managerApprover->contact?->personal_email)->send(new LeaveApplicationMail($data));
+                    PersonalEmailMailer::send($leave_request->managerApprover, new LeaveApplicationMail($data));
                 }
             }
             else if ($type == 'manager')
@@ -160,7 +160,7 @@ class LeaveRequestControllerFE extends Controller
                             'action_label' => 'Review Leave',
                         ];
 
-                        Mail::to($director->contact?->personal_email)->send(new LeaveApplicationMail($data));
+                        PersonalEmailMailer::send($director, new LeaveApplicationMail($data));
                     }
                 }
             }

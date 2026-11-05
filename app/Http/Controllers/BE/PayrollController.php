@@ -18,7 +18,7 @@ use App\Models\Payroll;
 use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 
 class PayrollController extends Controller
@@ -235,7 +235,7 @@ class PayrollController extends Controller
             'action_url' => url('/payroll-preview?token=' . $token . '&email=' . urlencode($payroll->user->email) . '&payroll_uuid=' . $payroll->uuid),
         ];
 
-        Mail::to($payroll->user->contact?->personal_email)->send(new PayrollNotificationMail($data));
+        PersonalEmailMailer::send($payroll->user, new PayrollNotificationMail($data));
 
         $payroll->update([
             'email_sent_at' => self::currentDateTime(),

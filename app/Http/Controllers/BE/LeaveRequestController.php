@@ -25,7 +25,7 @@ use App\Models\LeaveRequestDate;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -169,7 +169,7 @@ class LeaveRequestController extends Controller
                     'action_label' => 'Review Handover',
                 ];
 
-                Mail::to($handover_by->contact?->personal_email)->send(new LeaveApplicationMail($data));
+                PersonalEmailMailer::send($handover_by, new LeaveApplicationMail($data));
             }
             else
             {
@@ -187,7 +187,7 @@ class LeaveRequestController extends Controller
                     'action_label' => 'Review Leave',
                 ];
 
-                Mail::to($manager_approver->contact?->personal_email)->send(new LeaveApplicationMail($data));
+                PersonalEmailMailer::send($manager_approver, new LeaveApplicationMail($data));
             }
 
             $leave_request->load([
@@ -328,7 +328,7 @@ class LeaveRequestController extends Controller
         //             'action_label' => 'Review Handover',
         //         ];
 
-        //         Mail::to($handover_by->contact?->personal_email)->send(new LeaveApplicationMail($data));
+        //         PersonalEmailMailer::send($handover_by, new LeaveApplicationMail($data));
         //     }
         //     else if (!$handover_by && $new_manager->id != $old_manager_id) // only send email if manager is updated
         //     {
@@ -346,7 +346,7 @@ class LeaveRequestController extends Controller
         //             'action_label' => 'Review Leave',
         //         ];
 
-        //         Mail::to($new_manager->contact?->personal_email)->send(new LeaveApplicationMail($data));
+        //         PersonalEmailMailer::send($new_manager, new LeaveApplicationMail($data));
         //     }
 
         //     $leave_request->load([
@@ -629,7 +629,7 @@ class LeaveRequestController extends Controller
                             'action_label' => 'Review Leave',
                         ];
 
-                        Mail::to($director->contact?->personal_email)->send(new LeaveApplicationMail($data));
+                        PersonalEmailMailer::send($director, new LeaveApplicationMail($data));
                     }
                 }
             }

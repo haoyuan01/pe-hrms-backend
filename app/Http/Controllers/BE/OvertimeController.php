@@ -16,7 +16,7 @@ use App\Mail\OvertimeApplicationMail;
 use App\Models\Overtime;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -199,7 +199,7 @@ class OvertimeController extends Controller
                 'action_label' => 'Review Overtime',
             ];
 
-            Mail::to($director->contact?->personal_email)->send(new OvertimeApplicationMail($data));
+            PersonalEmailMailer::send($director, new OvertimeApplicationMail($data));
         }
     }
 
@@ -228,7 +228,7 @@ class OvertimeController extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($accountant->contact?->personal_email)->send(new OvertimeApplicationMail($data));
+            PersonalEmailMailer::send($accountant, new OvertimeApplicationMail($data));
         }
     }
 
@@ -258,7 +258,7 @@ class OvertimeController extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($director->contact?->personal_email)->send(new OvertimeApplicationMail($data));
+            PersonalEmailMailer::send($director, new OvertimeApplicationMail($data));
         }
     }
 

@@ -10,7 +10,7 @@ use App\Models\Overtime;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PersonalEmailMailer;
 use Illuminate\Support\Facades\Password;
 
 class OvertimeControllerFE extends Controller
@@ -138,7 +138,7 @@ class OvertimeControllerFE extends Controller
                 'overtime' => $overtime,
             ];
 
-            Mail::to($accountant->contact?->personal_email)->send(new OvertimeApplicationMail($data));
+            PersonalEmailMailer::send($accountant, new OvertimeApplicationMail($data));
         }
     }
 }
