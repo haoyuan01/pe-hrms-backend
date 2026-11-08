@@ -468,26 +468,6 @@ class LeaveModuleHelpers
             $remaining_days -= $used_days;
         }
 
-        if ($remaining_days > 0) {
-            LeaveEntitlementLog::create([
-                'uuid' => (string) Str::uuid(),
-                'leave_entitlement_id' => $leave_entitlement->id,
-                'assigned_days' => 0,
-                'used_days' => $remaining_days,
-                'assigned_at' => Carbon::now(),
-                'available_at' => $current_date,
-                'expired_at' => Carbon::create($leave_entitlement->year, 12, 31)->toDateString(),
-                'is_carry_forward' => StatusCodeConstants::INACTIVE,
-                'is_prorated' => StatusCodeConstants::INACTIVE,
-                'is_manual' => StatusCodeConstants::ACTIVE,
-                'is_active' => StatusCodeConstants::ACTIVE,
-                'created_by' => $updated_by,
-                'created_at' => Carbon::now(),
-                'updated_by' => $updated_by,
-                'updated_at' => Carbon::now(),
-            ]);
-        }
-
         $leave_entitlement->update([
             'used_days' => $leave_entitlement->used_days + $total_days,
             'carried_forward_days' => $leave_entitlement->carried_forward_days - $deduct_carried_forward_days,
