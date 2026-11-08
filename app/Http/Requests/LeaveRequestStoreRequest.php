@@ -31,6 +31,7 @@ class LeaveRequestStoreRequest extends FormRequest
             'resume_date' => ['required', 'date'],
             'total_days' => ['required', 'numeric', 'min:0'],
             'reason' => ['nullable', 'string'],
+            'handover_remark' => ['nullable', 'max:2000'],
             'attachment' => [
                 'nullable',
                 'mimes:' . Configuration::findByKey(ConfigurationCodeConstants::FILE_ALLOWED_TYPES)->value,
