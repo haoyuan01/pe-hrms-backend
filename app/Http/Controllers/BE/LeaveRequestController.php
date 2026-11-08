@@ -121,6 +121,7 @@ class LeaveRequestController extends Controller
                 'manager_approver_id' => $manager_approver->id,
                 'leave_entitlement_id' => $leave_entitlement->id,
                 'handover_by' => $handover_by?->id,
+                'handover_remark' => $request->handover_remark,
                 'resume_date' => $request->resume_date,
                 'total_days' => $request->total_days,
                 'reason' => $request->reason,
