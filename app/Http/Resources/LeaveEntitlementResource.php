@@ -29,11 +29,7 @@ class LeaveEntitlementResource extends JsonResource
             'updated_by' => $this->updated_by,
             'updated_at' => Carbon::parse($this->updated_at)->utc(),
             'user' => new UserResource($this->whenLoaded('user')),
-            'leave_policy' => new LeavePolicyResource(
-                $this->resource->relationLoaded('leavePolicyForDisplay')
-                    ? $this->whenLoaded('leavePolicyForDisplay')
-                    : $this->whenLoaded('leavePolicy')
-            ),
+            'leave_policy' => new LeavePolicyResource($this->whenLoaded('leavePolicy')),
             'leave_entitlement_logs' => LeaveEntitlementLogResource::collection($this->whenLoaded('leaveEntitlementLogs')),
         ];
 
