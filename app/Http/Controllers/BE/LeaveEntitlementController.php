@@ -44,9 +44,10 @@ class LeaveEntitlementController extends Controller
 
             $user->load([
                 'leaveEntitlements' => function($query) {
-                    $query->where('year', Carbon::now()->format('Y'));
+                    $query->where('is_active', StatusCodeConstants::ACTIVE)
+                        ->where('year', Carbon::now()->format('Y'));
                 },
-                'leaveEntitlements.leavePolicy.leavePolicyTiers',
+                'leaveEntitlements.leavePolicyForDisplay.leavePolicyTiers',
                 'leaveEntitlements.leaveEntitlementLogs',
             ]);
         });

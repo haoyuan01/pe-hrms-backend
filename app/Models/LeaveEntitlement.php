@@ -84,6 +84,11 @@ class LeaveEntitlement extends Model
         return $this->belongsTo(LeavePolicy::class, 'leave_policy_id', 'id')->active();
     }
 
+    public function leavePolicyForDisplay()
+    {
+        return $this->belongsTo(LeavePolicy::class, 'leave_policy_id', 'id');
+    }
+
     public function leaveEntitlementLogs()
     {
         return $this->hasMany(LeaveEntitlementLog::class, 'leave_entitlement_id', 'id')->active();
