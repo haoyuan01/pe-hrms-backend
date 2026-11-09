@@ -89,6 +89,7 @@ class LeaveRequestController extends Controller
 
     public function store(LeaveRequestStoreRequest $request)
     {
+        
         $user = User::findByUuid(self::auth()->uuid);
         $manager_approver = User::findByUuid($request->manager_approver_uuid);
         $leave_entitlement = LeaveEntitlement::findByUuid($request->leave_entitlement_uuid);
